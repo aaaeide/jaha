@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '3.1.3'
@@ -63,6 +65,13 @@ group :development do
   # gem "spring"
 
   gem 'error_highlight', '>= 0.4.0', platforms: [:ruby]
+
+  gem 'rubocop'
+  gem 'rubocop-capybara'
+  gem 'rubocop-factory_bot'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
+  gem 'rubocop-rspec_rails'
 end
 
 group :test do
