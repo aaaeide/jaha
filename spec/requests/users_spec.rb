@@ -19,11 +19,17 @@ RSpec.describe '/users' do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+    {
+      username: 'joea',
+      email: 'joe.armstrong@erlang.org'
+    }
   end
 
   let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    {
+      username: nil,
+      email: nil
+    }
   end
 
   describe 'GET /index' do
@@ -80,7 +86,7 @@ RSpec.describe '/users' do
 
       it "renders a response with 422 status (i.e. to display the 'new' template)" do
         post users_url, params: { user: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
@@ -88,14 +94,14 @@ RSpec.describe '/users' do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        { name: 'Joe Armstrong' }
       end
 
       it 'updates the requested user' do
         user = User.create! valid_attributes
         patch user_url(user), params: { user: new_attributes }
         user.reload
-        skip('Add assertions for updated state')
+        expect(user.name).to eq('Joe Armstrong')
       end
 
       it 'redirects to the user' do
@@ -110,7 +116,7 @@ RSpec.describe '/users' do
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
         user = User.create! valid_attributes
         patch user_url(user), params: { user: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
