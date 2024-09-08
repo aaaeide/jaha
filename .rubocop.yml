@@ -10,6 +10,10 @@ AllCops:
   Exclude:
     - "bin/**/*"
     - "vendor/**/*"
+    - "lib/tasks/**/*"
 
 Style/Documentation:
+  Enabled: false
+
+Rails/I18nLocaleTexts:
   Enabled: false
