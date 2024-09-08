@@ -1,6 +1,10 @@
 <section>
   <h2>Programmets medlemmer</h2>
-  <p><%= @show.users.count == 0 && "det er ingen her" %></p>
+  <p>
+    <% if @show.users.count == 0 %>
+      <%= "det er ingen her" %>
+    <% end %>
+  </p>
   <% @show.users.each do |user| %>
     <%= render user %>
   <% end %>

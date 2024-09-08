@@ -1,0 +1,11 @@
+<section>
+  <h2>Med i følgende programmer</h2>
+  <p>
+    <% if @user.shows.count == 0 %>
+      <%= "det er ingen her" %>
+    <% end %>
+  </p>
+  <% @user.shows.each do |show| %>
+    <%= render show %>
+  <% end %>
+</section>

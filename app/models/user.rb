@@ -14,4 +14,7 @@
 class User < ApplicationRecord
   validates :username, presence: true
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+
+  has_many :user_shows, dependent: :destroy
+  has_many :shows, through: :user_shows
 end
