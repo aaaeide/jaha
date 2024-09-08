@@ -19,4 +19,15 @@ class Show < ApplicationRecord
 
   has_many :user_shows, dependent: :destroy
   has_many :users, through: :user_shows
+
+  def add_host(user_id)
+    user = User.find_by(id: user_id)
+
+    if user
+      users << user
+      return true
+    end
+
+    false
+  end
 end

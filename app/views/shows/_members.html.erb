@@ -1,0 +1,7 @@
+<section>
+  <h2>Programmets medlemmer</h2>
+  <p><%= @show.users.count == 0 && "det er ingen her" %></p>
+  <% @show.users.each do |user| %>
+    <%= render user %>
+  <% end %>
+</section>

@@ -18,6 +18,10 @@
     <%= form.text_area :description %>
   </div>
   <div>
+    <%= form.label "New show host (user ID)", style: "display: block" %>
+    <%= form.text_field :new_host_user_id %>
+  </div>
+  <div>
     <%= form.submit %>
   </div>
 <% end %>

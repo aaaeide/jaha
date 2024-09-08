@@ -1,0 +1,4 @@
+<aside id="<%= dom_id user %>">
+  <%= image_tag "https://joesch.moe/api/v1/#{user.id}" %>
+  <h3><%= link_to user.name || user.username, user %></h3>
+</aside>
