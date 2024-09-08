@@ -1,10 +1,11 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @user %>
-
-<div>
-  <%= link_to "Edit this user", edit_user_path(@user) %> |
-  <%= link_to "Back to users", users_path %>
-
-  <%= button_to "Destroy this user", @user, method: :delete %>
-</div>
+<header>
+  <%= render "partials/navbar" %>
+  <p style="color: green"><%= notice %></p>
+  <h1><%= @user.name %></h1>
+  <p>
+    Kontakt: <%= @user.email %>
+  </p>
+  <figure>
+    <%= image_tag "https://joesch.moe/api/v1/#{@user.id}", height: 500 %>
+  </figure>
+</header>

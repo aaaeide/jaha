@@ -1,10 +1,14 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @show %>
-
+<header>
+  <%= render "partials/navbar" %>
+  <h1><%= @show.name %></h1>
+  <p>
+    <%= @show.description %>
+  </p>
+  <p style="color: green"><%= notice %></p>
+  <p>
+    <%= link_to "Edit this show", edit_show_path(@show) %> |
+    <%= link_to "Back to shows", shows_path %>
+  </p>
+</header>
 <div>
-  <%= link_to "Edit this show", edit_show_path(@show) %> |
-  <%= link_to "Back to shows", shows_path %>
-
-  <%= button_to "Destroy this show", @show, method: :delete %>
 </div>

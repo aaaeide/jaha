@@ -1,14 +1,19 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Shows</h1>
-
-<div id="shows">
+<header>
+  <%= render "partials/navbar" %>
+  <h1>Jaha? En hel haug med podkaster.</h1>
+  <p>
+    Velkommen til Jaha Produksjoner. Et Oslo-basert podkastkollektiv som lager innhold for deg som liker å ha noe på øret.
+  </p>
+  <p style="color: green"><%= notice %></p>
+</header>
+<section>
   <% @shows.each do |show| %>
-    <%= render show %>
-    <p>
-      <%= link_to "Show this show", show %>
-    </p>
+    <aside id="<%= dom_id show %>">
+      <%= image_tag "temp.svg", height: 150 %>
+      <h3><%= link_to show.name, show %></h3>
+      <p>
+        <%= show.description %>
+      </p>
+    </aside>
   <% end %>
-</div>
-
-<%= link_to "New show", new_show_path %>
+</section>

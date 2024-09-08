@@ -2,7 +2,6 @@
   <% if show.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(show.errors.count, "error") %> prohibited this show from being saved:</h2>
-
       <ul>
         <% show.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -10,17 +9,14 @@
       </ul>
     </div>
   <% end %>
-
   <div>
     <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name %>
   </div>
-
   <div>
     <%= form.label :description, style: "display: block" %>
     <%= form.text_area :description %>
   </div>
-
   <div>
     <%= form.submit %>
   </div>

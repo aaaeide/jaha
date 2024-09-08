@@ -1,14 +1,13 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Users</h1>
-
-<div id="users">
-  <% @users.each do |user| %>
-    <%= render user %>
-    <p>
-      <%= link_to "Show this user", user %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New user", new_user_path %>
+<header>
+  <%= render "partials/navbar" %>
+  <h1>Jahanianerne</h1>
+  <p style="color: green"><%= notice %></p>
+  <section>
+    <% @users.each do |user| %>
+      <aside id="<%= dom_id user %>">
+        <%= image_tag "https://joesch.moe/api/v1/#{user.id}" %>
+        <h3><%= link_to user.name || user.username, user %></h3>
+      </aside>
+    <% end %>
+  </section>
+</header>

@@ -1,10 +1,10 @@
-<h1>Editing user</h1>
-
-<%= render "form", user: @user %>
-
-<br>
-
-<div>
-  <%= link_to "Show this user", @user %> |
-  <%= link_to "Back to users", users_path %>
-</div>
+<header>
+  <h1>Editing user</h1>
+  <section>
+    <%= render "form", user: @user %>
+  </section>
+  <div>
+    <%= link_to "Show this user", @user %> |
+    <%= link_to "Back to users", users_path %>
+  </div>
+</header>
