@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_909_055_020) do
+ActiveRecord::Schema[7.1].define(version: 20_240_909_061_018) do
   create_table 'shows', force: :cascade do |t|
     t.string 'name', null: false
     t.text 'description'
@@ -37,6 +37,7 @@ ActiveRecord::Schema[7.1].define(version: 20_240_909_055_020) do
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.string 'password_digest', default: '', null: false
+    t.index ['username'], name: 'index_users_on_username', unique: true
   end
 
   add_foreign_key 'user_shows', 'shows'
