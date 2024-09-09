@@ -21,6 +21,6 @@
 #  user_id  (user_id => users.id)
 #
 class UserShow < ApplicationRecord
-  belongs_to :user, dependent: :destroy
-  belongs_to :show, dependent: :destroy
+  belongs_to :user
+  belongs_to :show
 end
