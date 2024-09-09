@@ -23,6 +23,6 @@
 require 'rails_helper'
 
 RSpec.describe UserShow do
-  it { is_expected.to belong_to(:user).dependent(:destroy) }
-  it { is_expected.to belong_to(:show).dependent(:destroy) }
+  it { is_expected.to belong_to(:user) }
+  it { is_expected.to belong_to(:show) }
 end

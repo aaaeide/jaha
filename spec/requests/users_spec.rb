@@ -21,14 +21,18 @@ RSpec.describe '/users' do
   let(:valid_attributes) do
     {
       username: 'joea',
-      email: 'joe.armstrong@erlang.org'
+      email: 'joe.armstrong@erlang.org',
+      password: 'secret',
+      password_confirmation: 'secret'
     }
   end
 
   let(:invalid_attributes) do
     {
       username: nil,
-      email: nil
+      email: nil,
+      password: nil,
+      password_confirmation: nil
     }
   end
 
