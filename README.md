@@ -1,24 +1,25 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+`jaha.productions` er (eller skal bli, da) en nettside for et podkastkollektiv med flere medlemmer. Hvert medlem er vert for ett eller flere programmer. Hvert program består av et antall episoder. Hver episode har en lydfil som ligger i en fileshare på Azure. Hvert program har en RSS-feed som kan leses av Spotify, iTunes og andre frittstående podkast-tjenester.
 
-Things you may want to cover:
+## Gjøremål
 
-* Ruby version
+### MVP
 
-* System dependencies
+- [x] Inn- og utlogging
+- [ ] Autorisering med Pundit
+- [ ] Gjemme adminfunksjoner i eget dash
+- [ ] Mine programmer
+- [ ] Redigere program
+- [ ] Laste opp episode
+- [ ] ActiveStorage
+- [ ] RSS
+  - [ ] Spotify
+  - [ ] iTunes
+- [ ] Programbilder
+- [ ] Skysetting
 
-* Configuration
+### Senere
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- [ ] Profilbilder
+- [ ] Blogg
