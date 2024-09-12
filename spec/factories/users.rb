@@ -21,6 +21,6 @@ FactoryBot.define do
     username { Faker::Internet.username }
     name { Faker::TvShows::Seinfeld.character }
     email { Faker::Internet.email(name:) }
-    password { BCrypt::Password.create('secret') }
+    password { 'secret' }
   end
 end

@@ -1,0 +1,21 @@
+<header>
+  <h1>Logg inn</h1>
+  <section>
+    <%= form_tag do %>
+      <div>
+        <%= label_tag :username %>
+        <%= text_field_tag :username, params[:username] %>
+      </div>
+      <div>
+        <%= label_tag :password %>
+        <%= password_field_tag :password, params[:password] %>
+      </div>
+      <section>
+        <%= submit_tag "Logg inn" %>
+      </section>
+    <% end %>
+  </section>
+  <div>
+    <%= link_to "Registrer ny bruker", new_user_path %>
+  </div>
+</header>

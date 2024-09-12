@@ -5,6 +5,8 @@
   <ul>
     <li><%= link_to "Medlemmer", :users %></li>
     <li><%= link_to "Programmer", :shows %></li>
-    <li><button>Logg inn</button></li>
+    <li>
+      <%= link_to "<button>Logg inn</button>".html_safe, login_url %>
+    </li>
   </ul>
 </nav>
