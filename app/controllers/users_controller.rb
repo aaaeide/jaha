@@ -23,6 +23,7 @@ class UsersController < ApplicationController
       return
     end
 
+    session[:user_id] = @user.id
     redirect_to user_url(@user), notice: 'User was successfully created.'
   end
 

@@ -79,6 +79,11 @@ RSpec.describe '/users' do
         post users_url, params: { user: valid_attributes }
         expect(response).to redirect_to(user_url(User.last))
       end
+
+      it 'sets the session[:user_id] to the created user id' do
+        post users_url, params: { user: valid_attributes }
+        expect(session[:user_id]).to eq(User.last.id)
+      end
     end
 
     context 'with invalid parameters' do
