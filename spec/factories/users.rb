@@ -5,6 +5,7 @@
 # Table name: users
 #
 #  id              :integer          not null, primary key
+#  admin           :boolean          default(FALSE), not null
 #  email           :string           not null
 #  name            :string
 #  password_digest :string           default(""), not null
@@ -22,5 +23,6 @@ FactoryBot.define do
     name { Faker::TvShows::Seinfeld.character }
     email { Faker::Internet.email(name:) }
     password { 'secret' }
+    admin { false }
   end
 end
