@@ -84,3 +84,5 @@ group :test do
   gem 'factory_bot'
   gem 'shoulda-matchers'
 end
+
+gem 'pundit', '~> 2.4'
