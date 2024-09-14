@@ -82,6 +82,7 @@ group :test do
 
   gem 'database_cleaner-active_record'
   gem 'factory_bot'
+  gem 'pundit-matchers', '~> 3.1'
   gem 'shoulda-matchers'
 end
 
