@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
+  before_action :authorize_user
+
   def new; end
 
   def create
@@ -17,5 +19,11 @@ class SessionsController < ApplicationController
   def destroy
     session[:user_id] = nil
     redirect_to root_url, notice: 'Du er nå logget ut.'
+  end
+
+  private
+
+  def authorize_user
+    authorize :session
   end
 end
