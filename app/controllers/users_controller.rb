@@ -2,9 +2,10 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
+  before_action :authorize_user
 
   def index
-    @users = User.all
+    @users = policy_scope(User)
   end
 
   def show; end
@@ -52,5 +53,9 @@ class UsersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def user_params
     params.require(:user).permit(:username, :email, :name, :password, :password_confirmation)
+  end
+
+  def authorize_user
+    authorize @user || User
   end
 end

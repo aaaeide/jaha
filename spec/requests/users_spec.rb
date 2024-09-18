@@ -37,6 +37,8 @@ RSpec.describe '/users' do
   end
 
   describe 'GET /index' do
+    let(:user) { create(:user) }
+
     it 'renders a successful response' do
       User.create! valid_attributes
       get users_url
@@ -45,30 +47,101 @@ RSpec.describe '/users' do
   end
 
   describe 'GET /show' do
+    let(:user) { create(:user) }
+
     it 'renders a successful response' do
-      user = User.create! valid_attributes
       get user_url(user)
       expect(response).to be_successful
     end
   end
 
   describe 'GET /new' do
-    it 'renders a successful response' do
-      get new_user_url
-      expect(response).to be_successful
+    context 'without logged in user' do
+      it 'renders a 403 response' do
+        get new_user_url
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in user' do
+      include_context 'with logged in user'
+
+      it 'renders a 403 response' do
+        get new_user_url
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in admin' do
+      include_context 'with logged in admin'
+
+      it 'renders a successful response' do
+        get new_user_url
+        expect(response).to be_successful
+      end
     end
   end
 
   describe 'GET /edit' do
-    it 'renders a successful response' do
-      user = User.create! valid_attributes
-      get edit_user_url(user)
-      expect(response).to be_successful
+    context 'without logged in user' do
+      let(:user) { create(:user) }
+
+      it 'renders a 403 response' do
+        get edit_user_url(user)
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in user, editing herself' do
+      include_context 'with logged in user'
+
+      it 'renders a successful response' do
+        get edit_user_url(current_user)
+        expect(response).to be_successful
+      end
+    end
+
+    context 'with logged in user, editing another user' do
+      include_context 'with logged in user'
+      let(:user) { create(:user) }
+
+      it 'renders a 403 response' do
+        get edit_user_url(user)
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in admin' do
+      include_context 'with logged in admin'
+      let(:user) { create(:user) }
+
+      it 'renders a successful response' do
+        get edit_user_url(user)
+        expect(response).to be_successful
+      end
     end
   end
 
   describe 'POST /create' do
-    context 'with valid parameters' do
+    context 'without logged in user' do
+      it 'renders a 403 response' do
+        post users_url, params: { user: valid_attributes }
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in user' do
+      include_context 'with logged in user'
+
+      it 'renders a 403 response' do
+        post users_url, params: { user: valid_attributes }
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in admin and valid parameters' do
+      include_context 'with logged in admin'
+
       it 'creates a new User' do
         expect do
           post users_url, params: { user: valid_attributes }
@@ -86,7 +159,9 @@ RSpec.describe '/users' do
       end
     end
 
-    context 'with invalid parameters' do
+    context 'with logged in admin and invalid parameters' do
+      include_context 'with logged in admin'
+
       it 'does not create a new User' do
         expect do
           post users_url, params: { user: invalid_attributes }
@@ -101,29 +176,58 @@ RSpec.describe '/users' do
   end
 
   describe 'PATCH /update' do
-    context 'with valid parameters' do
-      let(:new_attributes) do
-        { name: 'Joe Armstrong' }
+    let(:user) { create(:user) }
+    let(:new_attributes) do
+      { name: 'Joe Armstrong' }
+    end
+
+    context 'without logged in user' do
+      it 'renders a 403 response' do
+        patch user_url(user), params: { user: valid_attributes }
+        expect(response).to have_http_status(:forbidden)
       end
+    end
+
+    context 'with logged in user, updating herself' do
+      include_context 'with logged in user'
+      let(:user) { current_user }
 
       it 'updates the requested user' do
-        user = User.create! valid_attributes
+        patch user_url(user), params: { user: new_attributes }
+        user.reload
+        expect(user.name).to eq('Joe Armstrong')
+      end
+    end
+
+    context 'with logged in user, updating another user' do
+      include_context 'with logged in user'
+
+      it 'renders a 403 response' do
+        patch user_url(user), params: { user: new_attributes }
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in admin and valid parameters' do
+      include_context 'with logged in admin'
+
+      it 'updates the requested user' do
         patch user_url(user), params: { user: new_attributes }
         user.reload
         expect(user.name).to eq('Joe Armstrong')
       end
 
       it 'redirects to the user' do
-        user = User.create! valid_attributes
         patch user_url(user), params: { user: new_attributes }
         user.reload
         expect(response).to redirect_to(user_url(user))
       end
     end
 
-    context 'with invalid parameters' do
+    context 'with logged in admin and invalid parameters' do
+      include_context 'with logged in admin'
+
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
-        user = User.create! valid_attributes
         patch user_url(user), params: { user: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_content)
       end
@@ -131,17 +235,38 @@ RSpec.describe '/users' do
   end
 
   describe 'DELETE /destroy' do
-    it 'destroys the requested user' do
-      user = User.create! valid_attributes
-      expect do
+    context 'without logged in user' do
+      let(:user) { create(:user) }
+
+      it 'renders a 403 response' do
         delete user_url(user)
-      end.to change(User, :count).by(-1)
+        expect(response).to have_http_status(:forbidden)
+      end
     end
 
-    it 'redirects to the users list' do
-      user = User.create! valid_attributes
-      delete user_url(user)
-      expect(response).to redirect_to(users_url)
+    context 'with logged in user' do
+      include_context 'with logged in user'
+      let(:user) { create(:user) }
+
+      it 'renders a 403 response' do
+        delete user_url(user)
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in admin' do
+      include_context 'with logged in admin'
+      let(:user) { create(:user) }
+
+      it 'destroys the requested user' do
+        delete user_url(user)
+        expect(User.find_by(id: user.id)).to be_nil
+      end
+
+      it 'redirects to the users list' do
+        delete user_url(user)
+        expect(response).to redirect_to(users_url)
+      end
     end
   end
 end
