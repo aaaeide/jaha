@@ -7,7 +7,7 @@
 ### MVP
 
 - [x] Inn- og utlogging
-- [ ] Autorisering med Pundit
+- [x] Autorisering med Pundit
 - [ ] Gjemme adminfunksjoner i eget dash
 - [ ] Mine programmer
 - [ ] Redigere program

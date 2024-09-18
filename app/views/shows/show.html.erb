@@ -4,8 +4,12 @@
     <%= @show.description %>
   </p>
   <p style="color: green"><%= notice %></p>
+  <% if policy(@show).edit? %>
+    <p>
+      <%= link_to "Edit this show", edit_show_path(@show) %>
+    </p>
+  <% end %>
   <p>
-    <%= link_to "Edit this show", edit_show_path(@show) %> |
     <%= link_to "Back to shows", shows_path %>
   </p>
   <%= render "members" %>

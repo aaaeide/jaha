@@ -12,5 +12,8 @@
   <figure>
     <%= image_tag "https://joesch.moe/api/v1/#{@user.id}", height: 500 %>
   </figure>
+  <% if policy(@user).edit? %>
+    <%= link_to "Rediger bruker", edit_user_path(@user) %>
+  <% end %>
   <%= render "shows" %>
 </header>

@@ -7,4 +7,9 @@
     <%= link_to "Show this user", @user %> |
     <%= link_to "Back to users", users_path %>
   </div>
+  <% if policy(@user).destroy? %>
+    <%= link_to "Slett denne brukeren", user_path(@user), data: {
+      turbo_method: :delete
+    }, style: "color: red;" %>
+  <% end %>
 </header>
