@@ -15,38 +15,147 @@ RSpec.describe '/shows' do
   end
 
   describe 'GET /index' do
-    it 'renders a successful response' do
-      Show.create! valid_attributes
-      get shows_url
-      expect(response).to be_successful
+    context 'without logged in user' do
+      it 'renders a successful response' do
+        get shows_url
+        expect(response).to be_successful
+      end
+    end
+
+    context 'with logged in user' do
+      include_context 'with logged in user'
+
+      it 'renders a successful response' do
+        get shows_url
+        expect(response).to be_successful
+      end
+    end
+
+    context 'with logged in admin' do
+      include_context 'with logged in admin'
+
+      it 'renders a successful response' do
+        get shows_url
+        expect(response).to be_successful
+      end
     end
   end
 
   describe 'GET /show' do
-    it 'renders a successful response' do
-      show = Show.create! valid_attributes
-      get show_url(show)
-      expect(response).to be_successful
+    let(:show) { create(:show) }
+
+    context 'without logged in user' do
+      it 'renders a successful response' do
+        get show_url(show)
+        expect(response).to be_successful
+      end
+    end
+
+    context 'with logged in user' do
+      include_context 'with logged in user'
+
+      it 'renders a successful response' do
+        get show_url(show)
+        expect(response).to be_successful
+      end
+    end
+
+    context 'with logged in admin' do
+      include_context 'with logged in admin'
+
+      it 'renders a successful response' do
+        get show_url(show)
+        expect(response).to be_successful
+      end
     end
   end
 
   describe 'GET /new' do
-    it 'renders a successful response' do
-      get new_show_url
-      expect(response).to be_successful
+    context 'without logged in user' do
+      it 'renders a 403 response' do
+        get new_show_url
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in user' do
+      include_context 'with logged in user'
+
+      it 'renders a 403 response' do
+        get new_show_url
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in admin' do
+      include_context 'with logged in admin'
+
+      it 'renders a successful response' do
+        get new_show_url
+        expect(response).to be_successful
+      end
     end
   end
 
   describe 'GET /edit' do
-    it 'renders a successful response' do
-      show = Show.create! valid_attributes
-      get edit_show_url(show)
-      expect(response).to be_successful
+    let(:show) { create(:show) }
+
+    context 'without logged in user' do
+      it 'renders a 403 response' do
+        get edit_show_url(show)
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in user when user is a show host' do
+      include_context 'with logged in user'
+      let(:show) { create(:show, user: current_user) }
+
+      it 'renders a successful response' do
+        get edit_show_url(show)
+        expect(response).to be_successful
+      end
+    end
+
+    context 'with logged in user when user is not a show host' do
+      include_context 'with logged in user'
+
+      it 'renders a 403 response' do
+        get edit_show_url(show)
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in admin' do
+      include_context 'with logged in admin'
+
+      it 'renders a successful response' do
+        get edit_show_url(show)
+        expect(response).to be_successful
+      end
     end
   end
 
   describe 'POST /create' do
-    context 'with valid parameters' do
+    context 'without logged in user' do
+      it 'renders a 403 response' do
+        post shows_url, params: { show: valid_attributes }
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in user' do
+      include_context 'with logged in user'
+
+      it 'renders a 403 response' do
+        post shows_url, params: { show: valid_attributes }
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in admin and valid parameters' do
+      include_context 'with logged in admin'
+
       it 'creates a new Show' do
         expect do
           post shows_url, params: { show: valid_attributes }
@@ -59,7 +168,9 @@ RSpec.describe '/shows' do
       end
     end
 
-    context 'with invalid parameters' do
+    context 'with logged in admin and invalid parameters' do
+      include_context 'with logged in admin'
+
       it 'does not create a new Show' do
         expect do
           post shows_url, params: { show: invalid_attributes }
@@ -74,36 +185,75 @@ RSpec.describe '/shows' do
   end
 
   describe 'PATCH /update' do
-    context 'with valid parameters' do
+    let(:show) { create(:show) }
+
+    context 'without logged in user' do
+      it 'renders a 403 response' do
+        patch show_url(show), params: { show: valid_attributes }
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in user when the user is a show host' do
+      include_context 'with logged in user'
+      let(:show) { create(:show, user: current_user) }
+
       let(:new_attributes) do
         { name: 'My new podcast', description: 'A podcast about nothing...' }
       end
 
-      it 'updates the requested show' do
-        show = Show.create! valid_attributes
-        patch show_url(show), params: { show: new_attributes }
-        show.reload
-        expect(show.name).to eq('My new podcast')
-      end
-
       it 'redirects to the show' do
-        show = Show.create! valid_attributes
         patch show_url(show), params: { show: new_attributes }
         show.reload
         expect(response).to redirect_to(show_url(show))
       end
     end
 
-    context 'with invalid parameters' do
+    context 'with logged in user when the user is not a show host' do
+      include_context 'with logged in user'
+
+      let(:new_attributes) do
+        { name: 'My new podcast', description: 'A podcast about nothing...' }
+      end
+
+      it 'renders a 403 response' do
+        patch show_url(show), params: { show: new_attributes }
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in admin and valid parameters' do
+      include_context 'with logged in admin'
+
+      let(:new_attributes) do
+        { name: 'My new podcast', description: 'A podcast about nothing...' }
+      end
+
+      it 'updates the requested show' do
+        patch show_url(show), params: { show: new_attributes }
+        show.reload
+        expect(show.name).to eq('My new podcast')
+      end
+
+      it 'redirects to the show' do
+        patch show_url(show), params: { show: new_attributes }
+        show.reload
+        expect(response).to redirect_to(show_url(show))
+      end
+    end
+
+    context 'with logged in admin and invalid parameters' do
+      include_context 'with logged in admin'
+
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
-        show = Show.create! valid_attributes
         patch show_url(show), params: { show: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_content)
       end
     end
 
-    context 'when adding a user' do
-      let(:show) { create(:show) }
+    context 'with logged in admin when adding a user' do
+      include_context 'with logged in admin'
+
       let(:user) { create(:user) }
       let(:new_attributes) do
         { new_host_user_id: user.id }
@@ -118,17 +268,46 @@ RSpec.describe '/shows' do
   end
 
   describe 'DELETE /destroy' do
-    it 'destroys the requested show' do
-      show = Show.create! valid_attributes
-      expect do
+    let(:show) { create(:show) }
+
+    context 'without logged in user' do
+      it 'renders a 403 response' do
         delete show_url(show)
-      end.to change(Show, :count).by(-1)
+        expect(response).to have_http_status(:forbidden)
+      end
     end
 
-    it 'redirects to the shows list' do
-      show = Show.create! valid_attributes
-      delete show_url(show)
-      expect(response).to redirect_to(shows_url)
+    context 'with logged in user when the user is a show host' do
+      include_context 'with logged in user'
+      let(:show) { create(:show, user: current_user) }
+
+      it 'renders a 403 response' do
+        delete show_url(show)
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in user when the user is not a show host' do
+      include_context 'with logged in user'
+
+      it 'renders a 403 response' do
+        delete show_url(show)
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'with logged in admin' do
+      include_context 'with logged in admin'
+
+      it 'destroys the requested show' do
+        delete show_url(show)
+        expect(Show.find_by(id: show.id)).to be_nil
+      end
+
+      it 'redirects to the shows list' do
+        delete show_url(show)
+        expect(response).to redirect_to(shows_url)
+      end
     end
   end
 end

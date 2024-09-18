@@ -2,9 +2,10 @@
 
 class ShowsController < ApplicationController
   before_action :set_show, only: %i[show edit update destroy]
+  before_action :authorize_user
 
   def index
-    @shows = Show.all
+    @shows = policy_scope(Show)
   end
 
   def show; end
@@ -60,5 +61,9 @@ class ShowsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def show_params
     params.require(:show).permit(:name, :description, :new_host_user_id)
+  end
+
+  def authorize_user
+    authorize @show || Show
   end
 end
