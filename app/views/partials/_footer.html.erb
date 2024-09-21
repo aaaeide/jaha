@@ -1,0 +1,11 @@
+<footer>
+  <section>
+    <span>
+      <% if @current_user.nil? %>
+        Du er ikke logget inn | <%= link_to "Logg inn", login_url %>
+      <% else %>
+        Logget inn som <%= @current_user.username %> | <%= link_to "Logg ut", logout_url, data: { turbo_method: :delete} %>
+      <% end %>
+    </span>
+  </section>
+</footer>

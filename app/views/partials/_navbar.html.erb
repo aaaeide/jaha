@@ -1,25 +1,9 @@
 <nav>
   <ul>
-    <li><strong>Jaha Produksjoner</strong></li>
+    <li><strong><%= link_to "Jaha Produksjoner", :shows, class: "link-style-none" %></strong></li>
   </ul>
   <ul>
-    <li>
-      <% if @current_user.nil? %>
-        Ikke logget inn
-      <% else %>
-        Logget inn som <%= @current_user.username %>
-      <% end %>
-    </li>
     <li><%= link_to "Medlemmer", :users %></li>
     <li><%= link_to "Programmer", :shows %></li>
-    <% if @current_user.nil? %>
-      <li>
-        <%= link_to "<button>Logg inn</button>".html_safe, login_url %>
-      </li>
-    <% else %>
-      <li>
-        <%= link_to "<button>Logg ut</button>".html_safe, logout_url, data: { turbo_method: :delete} %>
-      </li>
-    <% end %>
   </ul>
 </nav>
