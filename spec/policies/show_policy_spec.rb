@@ -29,7 +29,7 @@ RSpec.describe ShowPolicy, type: :policy do
   end
 
   context 'when an admin' do
-    let(:user) { create(:user, admin: true) }
+    let(:user) { create(:user, :admin) }
 
     it { is_expected.to permit_all_actions }
   end
