@@ -9,6 +9,10 @@ Rails.application.routes.draw do
     delete 'logout' => :destroy
   end
 
+  controller :backoffice do
+    get 'backoffice' => :show
+  end
+
   resources :shows
   resources :users
 
