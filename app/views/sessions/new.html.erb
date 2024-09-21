@@ -1,6 +1,7 @@
 <header>
   <h1>Logg inn</h1>
   <section>
+    <p style="color: red;"><%= flash[:alert] %></p>
     <%= form_tag do %>
       <div>
         <%= label_tag :username %>

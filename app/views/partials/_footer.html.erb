@@ -1,11 +1,22 @@
 <footer>
   <section>
-    <span>
-      <% if @current_user.nil? %>
-        Du er ikke logget inn | <%= link_to "Logg inn", login_url %>
-      <% else %>
-        Logget inn som <%= @current_user.username %> | <%= link_to "Logg ut", logout_url, data: { turbo_method: :delete} %>
-      <% end %>
-    </span>
+    <% if @current_user.nil? %>
+      <p class="center">
+        Du er ikke logget inn
+      </p>
+      <p class="center">
+        <%= link_to "Logg inn", login_url %>
+      </p>
+    <% else %>
+      <p class="center">
+        Du er logget inn som <strong><%= @current_user.username %></strong>
+      </p>
+      <p class="center">
+        <%= link_to "Gå til admin-portal", backoffice_url %>
+      </p>
+      <p class="center">
+        <%= link_to "Logg ut", logout_url, data: { turbo_method: :delete} %>
+      </p>
+    <% end %>
   </section>
 </footer>
