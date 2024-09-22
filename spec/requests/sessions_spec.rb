@@ -33,7 +33,9 @@ RSpec.describe 'Sessions' do
   end
 
   describe 'DELETE /logout' do
-    include_context 'with logged in user'
+    let(:current_user) { create(:user) }
+
+    include_context 'with current_user logged in'
 
     it 'logs out' do
       delete logout_url

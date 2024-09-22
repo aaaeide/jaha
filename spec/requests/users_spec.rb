@@ -64,7 +64,9 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in user' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         get new_user_url
@@ -73,7 +75,9 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in admin' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get new_user_url
@@ -93,7 +97,9 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in user, editing herself' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get edit_user_url(current_user)
@@ -102,8 +108,10 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in user, editing another user' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
       let(:user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         get edit_user_url(user)
@@ -112,8 +120,10 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in admin' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
       let(:user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get edit_user_url(user)
@@ -131,7 +141,9 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in user' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         post users_url, params: { user: valid_attributes }
@@ -140,7 +152,9 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in admin and valid parameters' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'creates a new User' do
         expect do
@@ -160,7 +174,9 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in admin and invalid parameters' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'does not create a new User' do
         expect do
@@ -189,8 +205,10 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in user, updating herself' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
       let(:user) { current_user }
+
+      include_context 'with current_user logged in'
 
       it 'updates the requested user' do
         patch user_url(user), params: { user: new_attributes }
@@ -200,7 +218,9 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in user, updating another user' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         patch user_url(user), params: { user: new_attributes }
@@ -209,7 +229,9 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in admin and valid parameters' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'updates the requested user' do
         patch user_url(user), params: { user: new_attributes }
@@ -225,7 +247,9 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in admin and invalid parameters' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
         patch user_url(user), params: { user: invalid_attributes }
@@ -245,8 +269,10 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in user' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
       let(:user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         delete user_url(user)
@@ -255,8 +281,10 @@ RSpec.describe '/users' do
     end
 
     context 'with logged in admin' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
       let(:user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'destroys the requested user' do
         delete user_url(user)

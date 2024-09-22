@@ -5,7 +5,9 @@ require 'rails_helper'
 RSpec.describe 'Backoffice' do
   describe 'GET /show' do
     context 'when user is an admin' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get backoffice_url
@@ -14,7 +16,9 @@ RSpec.describe 'Backoffice' do
     end
 
     context 'when user is not an admin' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get backoffice_url

@@ -23,7 +23,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in user' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get shows_url
@@ -32,7 +34,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in admin' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get shows_url
@@ -52,7 +56,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in user' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get show_url(show)
@@ -61,7 +67,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in admin' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get show_url(show)
@@ -79,7 +87,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in user' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         get new_show_url
@@ -88,7 +98,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in admin' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get new_show_url
@@ -108,8 +120,10 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in user when user is a show host' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
       let(:show) { create(:show, user: current_user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get edit_show_url(show)
@@ -118,7 +132,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in user when user is not a show host' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         get edit_show_url(show)
@@ -127,7 +143,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in admin' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a successful response' do
         get edit_show_url(show)
@@ -145,7 +163,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in user' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         post shows_url, params: { show: valid_attributes }
@@ -154,7 +174,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in admin and valid parameters' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'creates a new Show' do
         expect do
@@ -169,7 +191,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in admin and invalid parameters' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'does not create a new Show' do
         expect do
@@ -195,12 +219,13 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in user when the user is a show host' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
       let(:show) { create(:show, user: current_user) }
-
       let(:new_attributes) do
         { name: 'My new podcast', description: 'A podcast about nothing...' }
       end
+
+      include_context 'with current_user logged in'
 
       it 'redirects to the show' do
         patch show_url(show), params: { show: new_attributes }
@@ -210,11 +235,12 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in user when the user is not a show host' do
-      include_context 'with logged in user'
-
+      let(:current_user) { create(:user) }
       let(:new_attributes) do
         { name: 'My new podcast', description: 'A podcast about nothing...' }
       end
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         patch show_url(show), params: { show: new_attributes }
@@ -223,11 +249,12 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in admin and valid parameters' do
-      include_context 'with logged in admin'
-
+      let(:current_user) { create(:user, :admin) }
       let(:new_attributes) do
         { name: 'My new podcast', description: 'A podcast about nothing...' }
       end
+
+      include_context 'with current_user logged in'
 
       it 'updates the requested show' do
         patch show_url(show), params: { show: new_attributes }
@@ -243,7 +270,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in admin and invalid parameters' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it "renders a response with 422 status (i.e. to display the 'edit' template)" do
         patch show_url(show), params: { show: invalid_attributes }
@@ -252,16 +281,14 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in admin when adding a user' do
-      include_context 'with logged in admin'
-
+      let(:current_user) { create(:user, :admin) }
       let(:user) { create(:user) }
-      let(:new_attributes) do
-        { new_host_user_id: user.id }
-      end
+
+      include_context 'with current_user logged in'
 
       it 'adds a user to the show' do
         expect do
-          patch show_url(show), params: { show: new_attributes }
+          patch show_url(show), params: { show: { new_host_user_id: user.id } }
         end.to change(show.users, :count).by(1)
       end
     end
@@ -278,8 +305,10 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in user when the user is a show host' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
       let(:show) { create(:show, user: current_user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         delete show_url(show)
@@ -288,7 +317,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in user when the user is not a show host' do
-      include_context 'with logged in user'
+      let(:current_user) { create(:user) }
+
+      include_context 'with current_user logged in'
 
       it 'renders a 403 response' do
         delete show_url(show)
@@ -297,7 +328,9 @@ RSpec.describe '/shows' do
     end
 
     context 'with logged in admin' do
-      include_context 'with logged in admin'
+      let(:current_user) { create(:user, :admin) }
+
+      include_context 'with current_user logged in'
 
       it 'destroys the requested show' do
         delete show_url(show)
