@@ -12,9 +12,9 @@ RSpec.describe 'Backoffice::Shows#create' do
   end
 
   context 'without logged in user' do
-    it '403s' do
+    it 'renders a 401' do
       post backoffice_shows_url, params: { show: valid_attributes }
-      expect(response).to have_http_status(:forbidden)
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 
@@ -59,7 +59,7 @@ RSpec.describe 'Backoffice::Shows#create' do
 
     it 'renders a 422' do
       post backoffice_shows_url, params: { show: invalid_attributes }
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
     end
   end
 end

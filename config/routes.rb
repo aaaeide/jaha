@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  namespace :backoffice do
+    resources :shows
+  end
   root 'shows#index'
 
   controller :sessions do

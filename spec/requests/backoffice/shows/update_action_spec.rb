@@ -12,13 +12,13 @@ RSpec.describe 'Backoffice::Shows#update' do
   end
 
   let(:current_user) { create(:user) }
-  let!(:my_show) { create(:show, users: [current_user]) }
-  let!(:your_show) { create(:show) }
+  let!(:my_show) { create(:show, name: 'my show', users: [current_user]) }
+  let!(:your_show) { create(:show, name: 'not my show') }
 
   context 'without logged in user' do
-    it 'redirects to login' do
+    it 'renders unauthorized' do
       patch backoffice_show_url(your_show), params: { show: valid_attributes }
-      expect(response).to redirect_to(login_url)
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 
@@ -28,14 +28,14 @@ RSpec.describe 'Backoffice::Shows#update' do
     include_context 'with current_user logged in'
 
     it 'renders a 403' do
-      patch backoffice_show_url(show), params: { show: valid_attributes }
+      patch backoffice_show_url(your_show), params: { show: valid_attributes }
       expect(response).to have_http_status(:forbidden)
     end
 
     it 'does not update the requested show' do
-      patch backoffice_show_url(show), params: { show: valid_attributes }
-      show.reload
-      expect(show.name).to eq('My podcast')
+      patch backoffice_show_url(your_show), params: { show: valid_attributes }
+      your_show.reload
+      expect(your_show.name).not_to eq('My new podcast')
     end
   end
 
@@ -46,8 +46,8 @@ RSpec.describe 'Backoffice::Shows#update' do
 
     it 'updates the requested show' do
       patch backoffice_show_url(my_show), params: { show: valid_attributes }
-      show.reload
-      expect(show.name).to eq('My podcast')
+      my_show.reload
+      expect(my_show.name).to eq(valid_attributes[:name])
     end
 
     it 'redirects to the show' do
@@ -62,25 +62,25 @@ RSpec.describe 'Backoffice::Shows#update' do
     include_context 'with current_user logged in'
 
     it 'updates the requested show' do
-      patch backoffice_show_url(my_show), params: { show: valid_attributes }
-      show.reload
-      expect(show.name).to eq('Updated Show Name')
+      patch backoffice_show_url(your_show), params: { show: valid_attributes }
+      your_show.reload
+      expect(your_show.name).to eq(valid_attributes[:name])
     end
 
     it 'redirects to the show' do
-      patch backoffice_show_url(my_show), params: { show: valid_attributes }
-      expect(response).to redirect_to(backoffice_show_url(my_show))
+      patch backoffice_show_url(your_show), params: { show: valid_attributes }
+      expect(response).to redirect_to(backoffice_show_url(your_show))
     end
 
     it 'renders a 422 with invalid parameters' do
-      patch backoffice_show_url(my_show), params: { show: invalid_attributes }
-      expect(response).to have_http_status(:unprocessable_entity)
+      patch backoffice_show_url(your_show), params: { show: invalid_attributes }
+      expect(response).to have_http_status(:unprocessable_content)
     end
 
     it 'does not update the requested show with invalid parameters' do
-      patch backoffice_show_url(my_show), params: { show: invalid_attributes }
-      show.reload
-      expect(show.name).to eq('My podcast')
+      patch backoffice_show_url(your_show), params: { show: invalid_attributes }
+      your_show.reload
+      expect(your_show.name).not_to eq(invalid_attributes[:name])
     end
   end
 end

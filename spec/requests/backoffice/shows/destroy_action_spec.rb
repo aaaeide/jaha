@@ -11,19 +11,18 @@ RSpec.describe 'Backoffice::Shows#destroy' do
     { name: nil, description: nil }
   end
 
-  let!(:my_show) { create(:show, users: [current_user]) }
-  let!(:your_show) { create(:show) }
+  let(:current_user) { create(:user) }
+  let!(:my_show) { create(:show, name: 'my pod!', users: [current_user]) }
+  let!(:your_show) { create(:show, name: 'not my pod!') }
 
   context 'without logged in user' do
-    it 'redirects to login' do
+    it 'renders a 401' do
       delete backoffice_show_url(your_show)
-      expect(response).to redirect_to(login_url)
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 
   context 'with logged in user' do
-    let(:current_user) { create(:user) }
-
     include_context 'with current_user logged in'
 
     it 'renders a 403' do

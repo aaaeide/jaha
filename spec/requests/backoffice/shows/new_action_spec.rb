@@ -3,10 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Backoffice::Shows#new' do
-  before { get new_backoffice_show_url }
-
   context 'without logged in user' do
     it 'redirects to login' do
+      get new_backoffice_show_url
       expect(response).to redirect_to(login_url)
     end
   end
@@ -17,6 +16,7 @@ RSpec.describe 'Backoffice::Shows#new' do
     include_context 'with current_user logged in'
 
     it 'renders a 403' do
+      get new_backoffice_show_url
       expect(response).to have_http_status(:forbidden)
     end
   end
@@ -27,6 +27,7 @@ RSpec.describe 'Backoffice::Shows#new' do
     include_context 'with current_user logged in'
 
     it 'renders a successful response' do
+      get new_backoffice_show_url
       expect(response).to have_http_status(:ok)
     end
   end

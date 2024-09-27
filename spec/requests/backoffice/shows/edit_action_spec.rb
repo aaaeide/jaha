@@ -3,8 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Backoffice::Shows#edit' do
-  let!(:my_show) { create(:show, users: [current_user]) }
-  let!(:your_show) { create(:show) }
+  let(:current_user) { create(:user) }
+
+  let!(:my_show) { create(:show, name: 'my pod!', users: [current_user]) }
+  let!(:your_show) { create(:show, name: 'not my pod!') }
 
   context 'without logged in user' do
     it 'redirects to login' do
@@ -14,8 +16,6 @@ RSpec.describe 'Backoffice::Shows#edit' do
   end
 
   context 'with logged in user' do
-    let(:current_user) { create(:user) }
-
     include_context 'with current_user logged in'
 
     it 'renders a successful response for my show' do
